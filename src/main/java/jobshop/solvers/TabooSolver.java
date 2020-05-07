@@ -16,7 +16,7 @@ public class TabooSolver implements Solver {
     public Result solve(Instance instance, long deadline) {
 
         // Variables de configuration de la méthode
-        int maxIter = 10000;
+        int maxIter = 1000;
         int dureeTaboo = 10;
 
         // Initialisation avec une solution issue d'un algo glouton : s_init = Glouton(instance)
@@ -35,9 +35,10 @@ public class TabooSolver implements Solver {
 
         // Compteur itérations
         int k = 0;
+        boolean done = false;
 
         // Exploration des voisinages successifs
-        while(k < maxIter && deadline - System.currentTimeMillis() > 1) {
+        while(!done && k < maxIter && deadline - System.currentTimeMillis() > 1) {
 
             ResourceOrder best_neighbor = null;
             int best_neighbor_t1 = -1;
@@ -91,6 +92,8 @@ public class TabooSolver implements Solver {
                     if (best_neighbor.toSchedule().makespan() < best_order.toSchedule().makespan()) {
                         best_order = best_neighbor.copy();
                     }
+                } else {
+                    done = true;
                 }
             }
 
